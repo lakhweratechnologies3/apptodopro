@@ -187,16 +187,8 @@ function RoutinePage() {
 
   // Add new routine
   const addRoutine = async () => {
-    // All fields required
-    if (
-      !name.trim() ||
-      !date.trim() ||
-      !startTime.trim() ||
-      !endTime.trim() ||
-      !links[0].trim() ||
-      !description.trim()
-    ) {
-      alert("All fields are required.");
+    if (!name.trim() || !date.trim() || !startTime.trim() || !endTime.trim()) {
+      alert("Name, date, start, and end time are required.");
       return;
     }
     const cleanedLinks = links.map((l) => l.trim()).filter(Boolean);
@@ -394,14 +386,13 @@ function RoutinePage() {
                 <div key={idx} style={{ display: "flex", alignItems: "center", gap: 6 }}>
                   <input
                     style={{ ...baseInputStyle, flex: 1 }}
-                    placeholder={`Link ${idx + 1}${idx === 0 ? " (required)" : ""}`}
+                    placeholder={`Link ${idx + 1}`}
                     value={link}
                     onChange={(e) => {
                       const copy = [...links];
                       copy[idx] = e.target.value;
                       setLinks(copy);
                     }}
-                    required={idx === 0}
                     maxLength={300}
                   />
                   {links.length > 1 && (
@@ -430,10 +421,9 @@ function RoutinePage() {
             <label style={labelStyle}>Description</label>
             <textarea
               style={{ ...baseInputStyle, minHeight: 80, resize: "vertical" }}
-              placeholder="Description (required)"
+              placeholder="Description (optional)"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              required
               maxLength={600}
               rows={3}
             />

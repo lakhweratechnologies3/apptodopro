@@ -80,7 +80,7 @@ export default function HomePage() {
     return (
       <main className="flex flex-col items-center justify-center min-h-screen p-8 bg-white transition-colors">
         <h1 className="text-3xl font-bold mb-6 text-black">Dashboard</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 w-full max-w-6xl">
           <div className="bg-white rounded-xl shadow p-8 flex flex-col items-center gap-4 border-2 border-black">
             <div className="text-5xl font-bold text-black">...</div>
             <div className="text-gray-600 text-sm font-semibold">Loading...</div>
@@ -97,6 +97,18 @@ export default function HomePage() {
             <div className="text-2xl font-bold text-black text-center">...</div>
             <div className="text-gray-600 text-sm font-semibold">Current Date</div>
           </div>
+          <div className="bg-white rounded-xl shadow p-8 flex flex-col items-center gap-4 border-2 border-black">
+            <div className="text-4xl font-bold text-black">...</div>
+            <div className="text-gray-600 text-sm font-semibold text-center">Eid al-Adha 2026</div>
+          </div>
+          <div className="bg-white rounded-xl shadow p-8 flex flex-col items-center gap-4 border-2 border-black">
+            <div className="text-4xl font-bold text-black">...</div>
+            <div className="text-gray-600 text-sm font-semibold text-center">Eid al-Fitr 2026</div>
+          </div>
+          <div className="bg-white rounded-xl shadow p-8 flex flex-col items-center gap-4 border-2 border-black">
+            <div className="text-4xl font-bold text-black">...</div>
+            <div className="text-gray-600 text-sm font-semibold text-center">Ramadan Start 2026</div>
+          </div>
         </div>
       </main>
     );
@@ -106,6 +118,23 @@ export default function HomePage() {
   const dayName = now.toLocaleDateString("en-US", { weekday: "long" });
   const dateStr = now.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
   const timeStr = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true });
+  const eidTargetMs = Date.UTC(2026, 4, 27, 0, 0, 0); // 27 May 2026 UTC
+  const daysUntilEid = Math.max(0, Math.ceil((eidTargetMs - now.getTime()) / (1000 * 60 * 60 * 24)));
+  const eidAlAdhaDate = new Date(eidTargetMs);
+  const eidDateStr = eidAlAdhaDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  const eidWeekday = eidAlAdhaDate.toLocaleDateString("en-US", { weekday: "long" });
+
+  const eidFitrTargetMs = Date.UTC(2026, 2, 20, 0, 0, 0); // 20 Mar 2026 UTC (may vary by region)
+  const daysUntilEidFitr = Math.max(0, Math.ceil((eidFitrTargetMs - now.getTime()) / (1000 * 60 * 60 * 24)));
+  const eidFitrDate = new Date(eidFitrTargetMs);
+  const eidFitrDateStr = eidFitrDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  const eidFitrWeekday = eidFitrDate.toLocaleDateString("en-US", { weekday: "long" });
+
+  const ramadanTargetMs = Date.UTC(2026, 1, 18, 0, 0, 0); // 18 Feb 2026 UTC (may vary by region)
+  const daysUntilRamadan = Math.max(0, Math.ceil((ramadanTargetMs - now.getTime()) / (1000 * 60 * 60 * 24)));
+  const ramadanDate = new Date(ramadanTargetMs);
+  const ramadanDateStr = ramadanDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  const ramadanWeekday = ramadanDate.toLocaleDateString("en-US", { weekday: "long" });
 
 
   return (
@@ -165,7 +194,28 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 w-full max-w-6xl">
+        {/* Ramadan Widget */}
+        <div className="bg-white rounded-xl shadow p-8 flex flex-col items-center gap-3 border-2 border-black">
+          <div className="text-4xl font-bold text-black">{daysUntilRamadan}</div>
+          <div className="text-gray-600 text-sm font-semibold text-center">Days until Ramadan 2026</div>
+          <div className="text-xs text-gray-500 text-center">Expected {ramadanWeekday}, {ramadanDateStr} (moon sighting)</div>
+        </div>
+
+        {/* Eid al-Fitr Widget */}
+        <div className="bg-white rounded-xl shadow p-8 flex flex-col items-center gap-3 border-2 border-black">
+          <div className="text-4xl font-bold text-black">{daysUntilEidFitr}</div>
+          <div className="text-gray-600 text-sm font-semibold text-center">Days until Eid al-Fitr 2026</div>
+          <div className="text-xs text-gray-500 text-center">Expected {eidFitrWeekday}, {eidFitrDateStr} (moon sighting)</div>
+        </div>
+
+        {/* Eid al-Adha Widget */}
+        <div className="bg-white rounded-xl shadow p-8 flex flex-col items-center gap-3 border-2 border-black">
+          <div className="text-4xl font-bold text-black">{daysUntilEid}</div>
+          <div className="text-gray-600 text-sm font-semibold text-center">Days until Eid al-Adha 2026</div>
+          <div className="text-xs text-gray-500 text-center">Expected {eidWeekday}, {eidDateStr} (subject to moon sighting)</div>
+        </div>
+
         {/* Days Left Widget */}
         <div className="bg-white rounded-xl shadow p-8 flex flex-col items-center gap-4 border-2 border-black">
           <div className="text-5xl font-bold text-black">{daysLeft}</div>
